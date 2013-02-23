@@ -7,8 +7,8 @@ public class Sketch2 extends PApplet
   private static final int BOIDS_COUNT =  25;
   private static final int SPEED       = 150;
 
-  private static final String IP = "74.194.42.76";
-  private static final int PORT = 9000;
+  private static final String IP = "localhost";
+  private static final int PORT = 9100;
 
   private Flock _flock;
 
