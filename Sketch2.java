@@ -22,6 +22,7 @@ public class Sketch2 extends PApplet
     _flock = new Flock(this, 8, 30, 10);
 
     _receiver = new UDP(this, PORT, IP);
+    _receiver.listen(true);
 
     for (int i = 0; i < BOIDS_COUNT; i++) {
       _flock.add(random(width), random(height), random(-SPEED, SPEED), random(-SPEED, SPEED));
@@ -37,6 +38,10 @@ public class Sketch2 extends PApplet
 
   public void receive(byte[] message)
   {
+    Skeleton.parse(message);
+
+    System.out.println("Left Hand: " + Skeleton.getJoint(Joint.HAND_LEFT));
+    System.out.println("Right Hand: " + Skeleton.getJoint(Joint.HAND_RIGHT));
   }
 
   public static void main(String[] args)
