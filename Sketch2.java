@@ -38,7 +38,7 @@ public class Sketch2 extends PApplet
 
   public void receive(byte[] message)
   {
-    Skeleton.parse(message);
+    Skeleton.parse(message, true);
 
     System.out.println("Left Hand: " + Skeleton.getJoint(Joint.HAND_LEFT));
     System.out.println("Right Hand: " + Skeleton.getJoint(Joint.HAND_RIGHT));

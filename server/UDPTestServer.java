@@ -28,6 +28,12 @@ public class UDPTestServer
       System.err.println(e.getMessage());
     }
 
+    try {
+      System.out.println("Available bytes: " + _stream.available());
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+    }
+
     _destinationIP = destinationIP;
     _destinationPort = destinationPort;
   }
@@ -46,10 +52,12 @@ public class UDPTestServer
   private byte[] readFromStream(InputStream is) throws IOException
   {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    byte[] b = new byte[4 * 62];
+    byte[] b = new byte[4 * 62]; // 4 * 62 = 248
 
     int count = is.read(b);
     baos.write(b, 0, count);
+
+    System.out.println("BAOS Size: " + baos.size());
 
     return baos.toByteArray();
   }
