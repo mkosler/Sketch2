@@ -1,4 +1,4 @@
-import codeanticode.syphon.SyphonServer;
+//import codeanticode.syphon.SyphonServer;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
@@ -40,8 +40,9 @@ public class Sketch2 extends PApplet
   private AudioPlayer highC;
   private AudioPlayer highE;
 
+  private PImage _keys;
   private PGraphics canvas;
-  private SyphonServer server;
+  //private SyphonServer server;
 
   public void setup()
   {
@@ -49,14 +50,9 @@ public class Sketch2 extends PApplet
     frameRate(30);
 
     canvas = createGraphics(displayWidth, displayHeight, P3D);
-    server = new SyphonServer(this, "Processing Server");
+    //server = new SyphonServer(this, "Processing Server");
 
-    PImage img = loadImage("data/path-complete.png");
-
-    canvas.beginDraw();
-    canvas.background(0, 0, 0);
-    canvas.image(img, 0, displayWidth - displayHeight / 3, displayWidth, displayWidth - displayHeight / 3);
-    canvas.endDraw();
+    _keys = loadImage("data/path-complete.png");
 
     _flock = new Flock(this);
 
@@ -91,14 +87,14 @@ public class Sketch2 extends PApplet
 
   public void draw()
   {
-    background(0);
-
     canvas.beginDraw();
+    canvas.background(0);
+    canvas.image(_keys, 0, displayHeight - displayHeight / 3, displayWidth, displayHeight - displayHeight / 3);
     _flock.draw(canvas);
     canvas.endDraw();
 
     image(canvas, 0, 0);
-    server.sendImage(canvas);
+    //server.sendImage(canvas);
     checkStep(mouseX, mouseY, mouseX, mouseY);
   }
 

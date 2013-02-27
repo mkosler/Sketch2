@@ -72,7 +72,7 @@ public class Boid
 
     if (_position.y < 0) {
       v.y = BOUND_BUFFER;
-    } else if (_position.y > _parent.height) {
+    } else if (_position.y > _parent.height / 2) {
       v.y = -BOUND_BUFFER;
     }
 
