@@ -3,38 +3,53 @@ import processing.core.PVector;
 
 public class Boid
 {
-  private static final int MAXIMUM_SPEED = 300;
   private static final int BOUND_BUFFER  =  50;
   private static final int WIDTH         =  10;
   private static final int HEIGHT        =   5;
-  private PApplet _parent;
-  private PVector _position;
-  private PVector _velocity;
 
-  public Boid(PApplet parent, PVector position, PVector velocity)
+  protected PApplet _parent;
+  protected PVector _position;
+  protected PVector _velocity;
+
+  private float _cohesionScale;
+  private float _minimumDistance;
+  private float _alignmentScale;
+  private float _maximumSpeed;
+
+  public Boid(PApplet parent,
+              PVector position,
+              PVector velocity,
+              float cohesionScale,
+              float minimumDistance,
+              float alignmentScale,
+              float maximumSpeed)
   {
-    _parent   = parent;
-    _position = position;
-    _velocity = velocity;
+    _parent          = parent;
+    _position        = position;
+    _velocity        = velocity;
+    _cohesionScale   = cohesionScale;
+    _minimumDistance = minimumDistance;
+    _alignmentScale  = alignmentScale;
+    _maximumSpeed    = maximumSpeed;
+  }
+
+  public void update(PVector velocity)
+  {
+    _velocity.add(velocity);
+
+    if (_velocity.mag() > _maximumSpeed) {
+      _velocity.normalize();
+      _velocity.mult(_maximumSpeed);
+    }
+    _velocity.add(bound());
+    _position.add(PVector.mult(_velocity, 1 / _parent.frameRate));
   }
 
   public void draw()
   {
-    if (_velocity.mag() > MAXIMUM_SPEED) {
-      _velocity.normalize();
-      _velocity.mult(MAXIMUM_SPEED);
-    }
-    _velocity.add(bound());
-    _position.add(PVector.mult(_velocity, 1 / _parent.frameRate));
-
-    _parent.fill(0, 255, 0);
-    _parent.stroke(255, 255, 0);
-    _parent.ellipse(_position.x, _position.y, WIDTH, HEIGHT);
-  }
-
-  public void updateVelocity(PVector velocity)
-  {
-    _velocity.add(velocity);
+    //_parent.fill(0, 255, 0);
+    //_parent.stroke(255, 255, 0);
+    //_parent.ellipse(_position.x, _position.y, WIDTH, HEIGHT);
   }
 
   public PVector getPosition()
@@ -64,5 +79,20 @@ public class Boid
     }
 
     return v;
+  }
+
+  public float getCohesionScale()
+  {
+    return _cohesionScale;
+  }
+
+  public float getMinimumDistance()
+  {
+    return _minimumDistance;
+  }
+
+  public float getAlignmentScale()
+  {
+    return _alignmentScale;
   }
 }

@@ -1,21 +1,18 @@
+import java.util.Scanner;
 import processing.core.PVector;
 
 public class Skeleton
 {
   private static final int JOINT_COUNT = 60;
+  private static final PVector SCALE = new PVector(0, 0, 0);
 
   private static int _frameNumber;
   private static int _skeletonNumber;
   private static float[] _values = new float[JOINT_COUNT];
 
-  public static void parse(byte[] stream, boolean isBinary)
-  {
-    if (isBinary) {
-      parseBinary(stream);
-    } else {
-      parseASCII(stream);
-    }
-  }
+  private static PVector _leftFoot  = new PVector(0, 0, 0);
+  private static PVector _rightFoot = new PVector(0, 0, 0);
+  private static PVector _head      = new PVector(0, 0, 0);
 
   public static int getFrameNumber()
   {
@@ -33,7 +30,17 @@ public class Skeleton
     return new PVector(_values[i * 3], _values[(i * 3) + 1], _values[(i * 3) + 2]);
   }
 
-  private static void parseBinary(byte[] stream)
+  public static PVector convertToScreenCoordinates(PVector cameraPositon)
+  {
+    return new PVector(cameraPositon.x * SCALE.x, cameraPositon.y * SCALE.y, cameraPositon.z * SCALE.z);
+  }
+
+  public static PVector getHead()
+  {
+    return _head;
+  }
+
+  public static void parseBinary(byte[] stream)
   {
     for (int i = 0; i < JOINT_COUNT + 2; i++) {
       int v = ((stream[i * 4 + 3] & 0xFF) << 24) |
@@ -58,7 +65,17 @@ public class Skeleton
     }
   }
 
-  private static void parseASCII(byte[] stream)
+  public static void parseASCII(String stream)
   {
+    Scanner s = new Scanner(stream);
+
+    int[] values = new int[9];
+    for (int i = 0; i < values.length; i++) {
+      values[i] = s.nextInt();
+    }
+
+    _rightFoot = new PVector(values[0], values[1], values[2]);
+    _leftFoot  = new PVector(values[3], values[4], values[5]);
+    _head      = new PVector(values[6], values[7], values[8]);
   }
 }

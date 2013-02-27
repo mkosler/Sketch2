@@ -7,29 +7,15 @@ import processing.core.PVector;
 public class Flock
 {
   private PApplet _parent;
-
-  private int _cohesionScale;
-  private int _minimumDistance;
-  private int _alignmentScale;
-
   private List<Boid> _boids;
-
   private PVector _gatherPoint;
-
   private boolean _shouldGather;
 
-  public Flock(PApplet parent, int cohesionScale, int minimumDistance, int alignmentScale)
+  public Flock(PApplet parent)
   {
     _parent          = parent;
-
-    _cohesionScale   = cohesionScale;
-    _minimumDistance = minimumDistance;
-    _alignmentScale  = alignmentScale;
-
     _boids           = new LinkedList<Boid>();
-
     _gatherPoint     = new PVector(0, 0);
-
     _shouldGather    = false;
   }
 
@@ -44,14 +30,14 @@ public class Flock
         v.add(getGatherVector(b));
       }
 
-      b.updateVelocity(v);
+      b.update(v);
       b.draw();
     }
   }
 
-  public void add(float x, float y, float vx, float vy)
+  public void add(Boid boid)
   {
-    _boids.add(new Boid(_parent, new PVector(x, y), new PVector(vx, vy)));
+    _boids.add(boid);
   }
 
   public PVector getGatherPoint()
@@ -75,14 +61,12 @@ public class Flock
   private PVector getGatherVector(Boid boid)
   {
     PVector v = PVector.sub(_gatherPoint, boid.getPosition());
-    v.div(_cohesionScale);
 
-    if (v.mag() > 50) {
-      v.normalize();
-      v.mult(50);
+    if (v.mag() < 125) {
+      return PVector.div(v, 2);
+    } else {
+      return PVector.div(v, 50);
     }
-
-    return v;
   }
 
   private PVector getCohesion(Boid boid)
@@ -97,7 +81,7 @@ public class Flock
 
     centerMass.div(_boids.size() - 1);
     centerMass.sub(boid.getPosition());
-    centerMass.div(_cohesionScale);
+    centerMass.div(boid.getCohesionScale());
     
     return centerMass;
   }
@@ -107,7 +91,7 @@ public class Flock
     PVector offset = new PVector(0, 0);
 
     for (Boid b : _boids) {
-      if (b != boid && PVector.dist(b.getPosition(), boid.getPosition()) < _minimumDistance) {
+      if (b != boid && PVector.dist(b.getPosition(), boid.getPosition()) < boid.getMinimumDistance()) {
         offset.sub(PVector.mult(PVector.sub(b.getPosition(), boid.getPosition()), 0.5f));
       }
     }
@@ -127,7 +111,7 @@ public class Flock
 
     align.div(_boids.size());
     align.sub(boid.getVelocity());
-    align.div(_alignmentScale);
+    align.div(boid.getAlignmentScale());
 
     return align;
   }
