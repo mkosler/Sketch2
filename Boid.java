@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Boid
@@ -45,11 +46,8 @@ public class Boid
     _position.add(PVector.mult(_velocity, 1 / _parent.frameRate));
   }
 
-  public void draw()
+  public void draw(PGraphics canvas)
   {
-    //_parent.fill(0, 255, 0);
-    //_parent.stroke(255, 255, 0);
-    //_parent.ellipse(_position.x, _position.y, WIDTH, HEIGHT);
   }
 
   public PVector getPosition()

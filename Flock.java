@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Flock
@@ -19,7 +20,7 @@ public class Flock
     _shouldGather    = false;
   }
 
-  public void draw()
+  public void draw(PGraphics canvas)
   {
     for (Boid b : _boids) {
       PVector v = getCohesion(b);
@@ -31,7 +32,7 @@ public class Flock
       }
 
       b.update(v);
-      b.draw();
+      b.draw(canvas);
     }
   }
 

@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PVector;
 
@@ -13,8 +14,8 @@ public class HalfNote extends Boid
     _image = image;
   }
 
-  public void draw()
+  public void draw(PGraphics canvas)
   {
-    _parent.image(_image, _position.x, _position.y);
+    canvas.image(_image, _position.x, _position.y);
   }
 }
